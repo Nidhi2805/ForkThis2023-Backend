@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "target": "ES2020",
+        "sourceMap": true,
+        "outDir": "dist",
+        "typeRoots": [
+            "./node_module/@types",
+            "./src/types"
+        ],
+        "isolatedModules": false
+    },
+    "ts-node": {
+        "esm":true
+    },
+    "lib":["ESNext"],
+    "include": ["src/**/*", "src/types/request.d.ts"]
+}
