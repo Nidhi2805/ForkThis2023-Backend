@@ -6,35 +6,32 @@ import session from 'express-session';
 import expressMongoSanitize from 'express-mongo-sanitize';
 import envHandler from "./managers/envHandler";
 
-
-const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
-const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
-
+const GITHUB_CLIENT_ID = envHandler('GITHUB_CLIENT_ID');
+const GITHUB_CLIENT_SECRET = envHandler('GITHUB_CLIENT_SECRET');
 
 interface User{
     id: string;
     username: string;
-    
+}
+
+function ensureAuthenticated(req:Request,res:Response,next:NextFunction){
+  if(req.isAuthenticated()){
+    return next();
   }
-  
-  function ensureAuthenticated(req:Request,res:Response,next:NextFunction){
-    if(req.isAuthenticated()){
-      return next();
-    }
-    res.redirect('/');
-  }
+  res.redirect('/');
+}
 
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = envHandler('PORT');
 
 app.use(cors());
 
 app.use(express.json());
 
 app.use(expressMongoSanitize());
-app.use(session({secret:'shhhhhh',resave: false, saveUninitialized: false}));
+app.use(session({secret: envHandler('SECRET'),resave: false, saveUninitialized: false}));
 app.use(cors());
 
 // initializing passport
@@ -44,7 +41,7 @@ app.use(passport.session());
 const githubStrategyOptions: StrategyOptionsWithRequest={
     clientID: GITHUB_CLIENT_ID as string,
     clientSecret: GITHUB_CLIENT_SECRET as string,
-    callbackURL: 'http://localhost:5000/authenticate/github/callback',
+    callbackURL: `${envHandler("URL")}/authenticate/github/callback`,
     passReqToCallback: true,
   };
   
@@ -60,7 +57,7 @@ const githubStrategyOptions: StrategyOptionsWithRequest={
       }
     )
   );
-  
+      
   passport.serializeUser((user, done) => {
     done(null, user);
   });
@@ -89,21 +86,9 @@ const githubStrategyOptions: StrategyOptionsWithRequest={
     }
   })
   
-  app.get('/',(req:Request,res:Response)=>{
+app.get('/',(req:Request,res:Response)=>{
     res.send('home Page ');
-  })
-  
-  app.get('/webHooks',(req:Request,res:Response)=>{
-    res.send("web hooks");
-  })
-  app.post('/webHooks',(req:Request,res:Response)=>{
-    res.send("web hooks");
-    console.log(req.body);
-  })
-
-
-
-
+})
 
 
 app.listen(PORT, () => {

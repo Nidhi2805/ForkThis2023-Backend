@@ -1,20 +1,17 @@
 import { Document, model, Schema, Model } from "mongoose";
-import IPR from "./prModel"; 
+import {PRInterface} from "./prModel"; 
 import IIssue from "./issueModel"; 
 
-interface IUser extends Document {
+export interface UserInterface extends Document {
   email: string;
   githubUsername: string;
-  phoneNumber: string;
   score: number;
   isGithubUsername: boolean;
-  noOfPRs: number;
-  noOfIssuesRaised: number;
   noOfIssuesSolved: number;
-  PRs: Array<IPR["_id"]>;
+  PRs: Array<PRInterface["_id"]>;
 }
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<UserInterface>(
   {
     email: {
       type: String,
@@ -26,18 +23,9 @@ const userSchema = new Schema<IUser>(
       required: true,
       unique: true,
     },
-    phoneNumber: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     score: {
       type: Number,
       default: 0,
-    },
-    isGithubUsername: {
-      type: Boolean,
-      default: false,
     },
   },
   {
@@ -54,32 +42,13 @@ userSchema.virtual("PRs", {
   localField: "_id",
 });
 
-userSchema.virtual("issuesRaised", {
-  ref: "Issue",
-  foreignField: "raisedBy",
-  localField: "_id",
-});
-
-userSchema.virtual("noOfPRs", {
-  ref: "PR",
-  localField: "_id",
-  foreignField: "user",
-  count: true,
-});
-
-userSchema.virtual("noOfIssuesRaised", {
-  ref: "Issue",
-  localField: "_id",
-  foreignField: "raisedBy",
-  count: true,
-});
 
 userSchema.virtual("noOfIssuesSolved", {
-  get: function (this: IUser) {
+  get: function (this: UserInterface) {
     return this.PRs.filter((pr) => pr.isMerged).length;
   },
 });
 
-const User: Model<IUser> = model<IUser>("User", userSchema);
+const User: Model<UserInterface> = model<UserInterface>("User", userSchema);
 
-export default IUser;
+export default User;
