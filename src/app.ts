@@ -5,9 +5,12 @@ import { Strategy as GitHubStrategy,StrategyOptionsWithRequest } from 'passport-
 import session from 'express-session';
 import expressMongoSanitize from 'express-mongo-sanitize';
 import envHandler from "./managers/envHandler";
+import morgan from 'morgan';
+import helmet from 'helmet';
 
 const GITHUB_CLIENT_ID = envHandler('GITHUB_CLIENT_ID');
 const GITHUB_CLIENT_SECRET = envHandler('GITHUB_CLIENT_SECRET');
+
 
 interface User{
     id: string;
@@ -29,6 +32,11 @@ const PORT = envHandler('PORT');
 app.use(cors());
 
 app.use(express.json());
+
+app.use(helmet());
+
+if (envHandler('NODE_ENV') === 'dev') app.use(morgan('dev'));
+
 
 app.use(expressMongoSanitize());
 app.use(session({secret: envHandler('SECRET'),resave: false, saveUninitialized: false}));

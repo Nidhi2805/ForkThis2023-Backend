@@ -1,9 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import logger from '../../logs/logger';
 
-const catchAsync = (fn: (req: Request, res: Response, next: NextFunction) => Promise<void>) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    fn(req, res, next).catch((err: Error) => next(err));
-  };
+type asyncFunction = (req:Request, res:Response, next:NextFunction) => any;
+
+const catchAsync = (fn:asyncFunction) => (req:Request, res:Response, next:NextFunction) => {
+  fn(req, res, next).catch((err:Error) => {
+    logger.error(err.message);
+    next(err);
+  });
 };
 
 export default catchAsync;
