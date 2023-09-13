@@ -49,27 +49,27 @@ userSchema.virtual("noOfIssuesSolved", {
   },
 });
 
-userSchema.virtual("score", {
-  get: function (this: UserInterface) {
-    return this.PRs.reduce((total, pr) => {
-      if (pr.issue) {
-        switch (pr.issue.difficulty) {
-          case "easy":
-            return total + 10;
-          case "medium":
-            return total + 30;
-          case "hard":
-            return total + 50;
-          case "expert":
-            return total + 100;
-          default:
-            return total; // If difficulty is not recognized, don't change the total.
-        }
-      }
-      return total; // If there's no issue, don't change the total.
-    }, 0); // Initial total is set to 0 here.
-  },
-});
+// userSchema.virtual("score", {
+//   get: function (this: UserInterface) {
+//     return this.PRs.reduce((total, pr) => {
+//       if (pr.issue) {
+//         switch (pr.issue.difficulty) {
+//           case "easy":
+//             return total + 10;
+//           case "medium":
+//             return total + 30;
+//           case "hard":
+//             return total + 50;
+//           case "expert":
+//             return total + 100;
+//           default:
+//             return total; // If difficulty is not recognized, don't change the total.
+//         }
+//       }
+//       return total; // If there's no issue, don't change the total.
+//     }, 0); // Initial total is set to 0 here.
+//   },
+// });
 
 
 const User: Model<UserInterface> = model<UserInterface>("User", userSchema);

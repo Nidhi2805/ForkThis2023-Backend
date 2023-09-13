@@ -30,9 +30,9 @@ app.use(cors());
 
 app.use(express.json());
 
-// app.use(helmet());
+app.use(helmet());
 
-// if (envHandler('NODE_ENV') === 'dev') app.use(morgan('dev'));
+if (envHandler('NODE_ENV') === 'dev') app.use(morgan('dev'));
 
 app.use(expressMongoSanitize());
 
