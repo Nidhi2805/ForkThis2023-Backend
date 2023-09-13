@@ -1,7 +1,10 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const envPath = path.join(__dirname, '../../', '.env'); // Goes up one level from envHandler.ts and then specifies the .env file
+const currentModuleURL = import.meta.url;
+const currentModulePath = fileURLToPath(currentModuleURL);
+const envPath = path.join(path.dirname(currentModulePath), '../../', '.env');
 
 dotenv.config({path: envPath});
 

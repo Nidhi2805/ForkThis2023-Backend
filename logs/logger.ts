@@ -10,7 +10,7 @@ const formatconfig = winston.format.combine(
   winston.format.errors({ stack: true })
 );
 
-const createLog = (filename:string, level:string) =>
+const createLog = (filename: string, level: string) =>
   winston.createLogger({
     transports: [
       new winston.transports.File({
@@ -22,15 +22,13 @@ const createLog = (filename:string, level:string) =>
   });
 
 const errorLogger = createLog('error', 'error');
-
 const infoLogger = createLog('info', 'info');
-
 const protectLogger = createLog('protect', 'warn');
 
 const logger = {
-  info: (log:string) => infoLogger.info(log),
-  error: (log:string) => errorLogger.error(log),
-  protect: (log:string) => protectLogger.warn(log),
+  info: (log: string) => infoLogger.info(log),
+  error: (log: string) => errorLogger.error(log),
+  protect: (log: string) => protectLogger.warn(log),
 };
 
 export default logger;

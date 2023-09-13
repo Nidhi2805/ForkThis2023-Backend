@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import logger from '../../logs/logger';
+import logger from '../../logs/logger.js';
 
 type asyncFunction = (req:Request, res:Response, next:NextFunction) => any;
 

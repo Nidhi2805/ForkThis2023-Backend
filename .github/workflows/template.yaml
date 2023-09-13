@@ -1,0 +1,45 @@
+name: Trigger on PR Merge with Comment
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR was merged with comment
+        env:
+          AUTH_HEADER: ${{ secrets.AUTH_TOKEN }}
+        id: process_input
+        run: |
+          pr_number=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          merge_title=false
+          issue_tags=""
+          title=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${pr_number}" | jq -r '.title')
+          echo "${title}"
+          if [[ "$title" =~ fixes\ #[0-9]+ ]]; then
+            echo "yay"
+            merge_title=true
+            issue_number=$(echo "$title" | grep -o -E 'fixes #[0-9]+' | grep -o -E '[0-9]+')
+            issue_tags=$(curl -s "https://api.github.com/repos/${GITHUB_REPOSITORY}/issues/${issue_number}" | jq -r '.labels')
+          fi
+          echo "::set-output name=merge_title::$merge_title"
+          echo "::set-output name=issue_tags::$issue_tags"
+        shell: bash
+
+      - name: Send POST request
+        if: steps.process_input.outputs.merge_title == 'true' 
+        env:
+          GITHUB_USERNAME: ${{ github.event.pull_request.user.login }}
+          ISSUE_TAGS: ${{ steps.process_input.outputs.issue_tags }} 
+          PR_URL: ${{ github.event.pull_request.url }}
+          ISSUE_URL: ${{github.event.pull_request.issue_url}}
+          AUTHORIZATION_HEADER: "hello"
+          BACKEND_URL: "https://dbae-152-58-205-207.ngrok-free.app/pullrequest/closed"
+        run: |
+
+          payload="{\"username\":\"$GITHUB_USERNAME\",\"issue_tags\":\"$ISSUE_TAGS\", \"issue_url\":\"$ISSUE_URL\", \"pr_url\":\"$PR_URL"}"
+
+          curl -X POST -H "Authorization: $AUTHORIZATION_HEADER" -H "Content-Type: application/json" -d "$payload" "$BACKEND_URL"

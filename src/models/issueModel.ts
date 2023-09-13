@@ -3,8 +3,7 @@ import { Document, model, Schema, Model } from "mongoose";
 export interface IssueInterface extends Document {
   repo: string;
   title: string;
-  difficulty: "beginner" | "easy" | "medium" | "hard" | "expert";
-  isClosed: boolean;
+  difficulty: "easy" | "medium" | "hard" | "expert";
 }
 
 const issueSchema = new Schema<IssueInterface>(
@@ -14,10 +13,6 @@ const issueSchema = new Schema<IssueInterface>(
     difficulty: {
       type: String,
       enum: ["easy", "medium", "hard", "expert"],
-    },
-    isClosed: {
-      type: Boolean,
-      default: false,
     },
   },
   {
