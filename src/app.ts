@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import pullrequest from './routes/pullrequest.js';
 import register from './routes/register.js';
+import leaderboard from './routes/leaderboard.js';
 
 const PORT = envHandler("PORT")
 
@@ -99,6 +100,8 @@ app.use(expressMongoSanitize());
 app.use('/pullrequest', pullrequest);
 
 app.use('/github', register)
+
+app.use('/leaderboard', leaderboard)
 
 app.listen(3001, () => {
     console.log(`Server started at port ${PORT}`);
