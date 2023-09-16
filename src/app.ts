@@ -11,6 +11,7 @@ import leaderboard from './routes/leaderboard.js';
 import connectToDB from './managers/db.js';
 import user from './routes/user.js';
 import auth from './routes/auth.js';
+import generate from './routes/generate.js';
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/github', register)
 app.use('/leaderboard', leaderboard)
 app.use('/user', user);
 app.use('/auth', auth);
+app.use('/generate', generate);
 
 app.listen(3001, () => {
     console.log(`Server started at port ${envHandler('PORT')}`);

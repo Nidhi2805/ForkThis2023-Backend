@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { githubOptions } from '../helpers/githubOptions.js';
+import githubOptions  from '../helpers/githubOptions.js';
 import { callbackAuthController } from '../controllers/authController.js';
 
 const auth = express.Router();

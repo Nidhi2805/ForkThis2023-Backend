@@ -4,10 +4,11 @@ import envHandler from '../managers/envHandler.js';
 import User from '../models/userModel.js';
 import axios from 'axios';
 import Issue from '../models/issueModel.js';
-import { GitHubIssue } from '../types/githubIssue.js';
+import GitHubIssue from '../types/githubIssue.js';
 import logger from '../../logs/logger.js';
-import { difficultyFind } from '../helpers/difficultyFind.js';
-import PR from '../models/prModel.js';
+import difficultyFind from '../helpers/difficultyFind.js';
+import difficultyScore from '../helpers/difficultyScore.js';
+// import PR from '../models/prModel.js';
 
 export const ClosedPRController = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -30,32 +31,16 @@ export const ClosedPRController = catchAsync(
         }
         const newIssue = new Issue(issuePayload);
         await newIssue.save();
-        const newPR = new PR({issue: newIssue._id, user: user._id});
-        await newPR.save();
-        user.PRs.push(newPR._id);
+        // const newPR = new PR({issue: newIssue._id, user: user._id});
+        // await newPR.save();
+        user.Issues.push(newIssue._id);
 
-        const newscore = user.score;
+        let newscore = user.score;
 
-        switch (issuePayload.difficulty) {
-            case "easy":
-                user.score = newscore + 10;
-                break;
-            case "medium":
-                user.score = newscore + 30;
-                break;
-            case "hard":
-                user.score = newscore + 50;
-                break;
-            case "expert":
-                user.score = newscore + 100;
-                break;
-            default:
-                break;
-        }
+        newscore = newscore + difficultyScore(issuePayload.difficulty);
 
         user.score = newscore;
         logger.info(`User ${username} has scored ${user.score} points`);
         await user.save();
-
         return res.status(200).json({"success":true});
 })

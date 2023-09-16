@@ -4,7 +4,7 @@ import envHandler from "../managers/envHandler.js";
 import User from "../models/userModel.js";
 import logger from "../../logs/logger.js";
 
-export const githubOptions = new Strategy({
+const githubOptions = new Strategy({
         clientID: envHandler("GITHUB_CLIENT_ID"),
         clientSecret: envHandler("GITHUB_CLIENT_SECRET"),
         callbackURL: `${envHandler("URL")}/auth/github/callback`
@@ -35,3 +35,5 @@ export const githubOptions = new Strategy({
           return cb(err, null);
         }
 })
+
+export default githubOptions;

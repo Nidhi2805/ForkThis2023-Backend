@@ -1,15 +1,15 @@
 import { Document, model, Schema, Model } from "mongoose";
-import {PRInterface} from "./prModel"; 
-import IIssue from "./issueModel"; 
+// import {PRInterface} from "./prModel"; 
+import IIssue, { IssueInterface } from "./issueModel"; 
 
 export interface UserInterface extends Document {
   githubUsername: string;
   name: string;
   score: number;
   noOfIssuesSolved: number;
-  PRs: Array<PRInterface["_id"]>;
+  Issues: Array<IssueInterface["_id"]>;
   id: string;
-  email: string;
+  // email: string;
 }
 
 const userSchema = new Schema<UserInterface>(
@@ -19,11 +19,11 @@ const userSchema = new Schema<UserInterface>(
       required: true,
       unique: true,
     },
-    email: {
-      type: String,
-      required: false,
-      unique: false,
-    },
+    // email: {
+    //   type: String,
+    //   required: false,
+    //   unique: false,
+    // },
     name : {
       type: String,
       required: true,
@@ -46,8 +46,8 @@ const userSchema = new Schema<UserInterface>(
 
 userSchema.index({ score: -1 });
 
-userSchema.virtual("PRs", {
-  ref: "PR",
+userSchema.virtual("Issues", {
+  ref: "Issue",
   foreignField: "user",
   localField: "_id",
 });
@@ -55,7 +55,7 @@ userSchema.virtual("PRs", {
 
 userSchema.virtual("noOfIssuesSolved", {
   get: function (this: UserInterface) {
-    return this.PRs.filter((pr) => pr.issue).length;  
+    return this.Issues.filter((issue) => issue.issue).length;  
   },
 });
 

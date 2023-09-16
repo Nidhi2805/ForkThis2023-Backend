@@ -1,4 +1,4 @@
-export function difficultyFind(labelarr: string[]) {
+function difficultyFind(labelarr: string[]) {
     const easyLabels = ['easy', 'beginner'];
     const mediumLabels = ['medium', 'intermediate'];
     const hardLabels = ['hard', 'advanced'];
@@ -19,3 +19,5 @@ export function difficultyFind(labelarr: string[]) {
     }
     return difficulty;
 }
+
+export default difficultyFind;

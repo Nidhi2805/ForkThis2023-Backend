@@ -1,4 +1,4 @@
-export interface GitHubIssue {
+export default interface GitHubIssue {
     url: string;
     repository_url: string;
     labels_url: string;
