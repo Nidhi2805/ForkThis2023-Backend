@@ -1,40 +1,18 @@
 import { Document, model, Schema, Model } from "mongoose";
-import IUser from "./userModel"; 
 
-interface IIssue extends Document {
+export interface IssueInterface extends Document {
   repo: string;
-  repoURL: string;
-  raisedBy: IUser["_id"]; 
   title: string;
-  issueURL: string;
-  labels: string[];
-  difficulty: "beginner" | "easy" | "medium" | "hard" | "expert";
-  isClosed: boolean;
-  createdAt: Date;
+  difficulty: "easy" | "medium" | "hard" | "expert";
 }
 
-const issueSchema = new Schema<IIssue>(
+const issueSchema = new Schema<IssueInterface>(
   {
     repo: String,
-    repoURL: String,
-    raisedBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
     title: String,
-    issueURL: String,
-    labels: [String],
     difficulty: {
       type: String,
-      enum: ["beginner", "easy", "medium", "hard", "expert"],
-    },
-    isClosed: {
-      type: Boolean,
-      default: false,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
+      enum: ["easy", "medium", "hard", "expert"],
     },
   },
   {
@@ -43,8 +21,6 @@ const issueSchema = new Schema<IIssue>(
   }
 );
 
-issueSchema.index({ createdAt: -1 });
+const Issue: Model<IssueInterface> = model<IssueInterface>("Issue", issueSchema);
 
-const Issue: Model<IIssue> = model<IIssue>("Issue", issueSchema);
-
-export default IIssue;
+export default Issue;

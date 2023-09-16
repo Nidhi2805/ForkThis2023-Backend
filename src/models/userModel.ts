@@ -1,44 +1,42 @@
 import { Document, model, Schema, Model } from "mongoose";
-import IPR from "./prModel"; 
-import IIssue from "./issueModel"; 
+// import {PRInterface} from "./prModel"; 
+import IIssue, { IssueInterface } from "./issueModel"; 
 
-interface IUser extends Document {
-  email: string;
+export interface UserInterface extends Document {
   githubUsername: string;
-  phoneNumber: string;
+  name: string;
   score: number;
-  isGithubUsername: boolean;
-  noOfPRs: number;
-  noOfIssuesRaised: number;
   noOfIssuesSolved: number;
-  PRs: Array<IPR["_id"]>;
+  Issues: Array<IssueInterface["_id"]>;
+  id: string;
+  // email: string;
 }
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<UserInterface>(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     githubUsername: {
       type: String,
       required: true,
       unique: true,
     },
-    phoneNumber: {
+    // email: {
+    //   type: String,
+    //   required: false,
+    //   unique: false,
+    // },
+    name : {
       type: String,
       required: true,
-      unique: true,
     },
     score: {
       type: Number,
       default: 0,
     },
-    isGithubUsername: {
-      type: Boolean,
-      default: false,
-    },
+    id:{
+      type: String,
+      required: true,
+      unique: true,
+    }
   },
   {
     toJSON: { virtuals: true },
@@ -48,38 +46,19 @@ const userSchema = new Schema<IUser>(
 
 userSchema.index({ score: -1 });
 
-userSchema.virtual("PRs", {
-  ref: "PR",
+userSchema.virtual("Issues", {
+  ref: "Issue",
   foreignField: "user",
   localField: "_id",
 });
 
-userSchema.virtual("issuesRaised", {
-  ref: "Issue",
-  foreignField: "raisedBy",
-  localField: "_id",
-});
-
-userSchema.virtual("noOfPRs", {
-  ref: "PR",
-  localField: "_id",
-  foreignField: "user",
-  count: true,
-});
-
-userSchema.virtual("noOfIssuesRaised", {
-  ref: "Issue",
-  localField: "_id",
-  foreignField: "raisedBy",
-  count: true,
-});
 
 userSchema.virtual("noOfIssuesSolved", {
-  get: function (this: IUser) {
-    return this.PRs.filter((pr) => pr.isMerged).length;
+  get: function (this: UserInterface) {
+    return this.Issues.filter((issue) => issue.issue).length;  
   },
 });
 
-const User: Model<IUser> = model<IUser>("User", userSchema);
+const User: Model<UserInterface> = model<UserInterface>("User", userSchema);
 
-export default IUser;
+export default User;

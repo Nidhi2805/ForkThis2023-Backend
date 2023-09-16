@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import envHandler from './envHandler';
+import envHandler from './envHandler.js';
 
-const URL: string = envHandler("DATABASE_URL").replace('<password>', envHandler("DATABASE_PASSWORD"));
+const URL: string = envHandler("DATABASE_URL");
 
 const connectToDB = (): Promise<void> => mongoose.connect(URL)
     .then(() => {

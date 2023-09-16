@@ -1,53 +1,30 @@
-import { Document, model, Schema, Model } from "mongoose";
-import  IUser  from "./userModel"; 
-import  IIssue  from "./issueModel"; 
+// import { Document, model, Schema, Model } from "mongoose";
+// import  {UserInterface}  from "./userModel"; 
+// import  {IssueInterface}  from "./issueModel"; 
 
-interface IPR extends Document {
-  user: IUser["_id"];
-  issue: IIssue["_id"];
-  prURL: string;
-  isClosed: boolean;
-  isMerged: boolean;
-  createdAt: Date;
-}
+// export interface PRInterface extends Document {
+//   user: UserInterface["_id"];
+//   issue: IssueInterface["_id"];
+// }
 
-const PRSchema = new Schema<IPR>(
-  {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-    issue: {
-      type: Schema.Types.ObjectId,
-      ref: "Issue",
-    },
-    prURL: String,
-    isClosed: {
-      type: Boolean,
-      default: false,
-    },
-    isMerged: {
-      type: Boolean,
-      default: false,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
-);
+// const PRSchema = new Schema<PRInterface>(
+//   {
+//     user: {
+//       type: Schema.Types.ObjectId,
+//       ref: "User",
+//     },
+//     issue: {
+//       type: Schema.Types.ObjectId,
+//       ref: "Issue",
+//     },
+//   },
+//   {
+//     toJSON: { virtuals: true },
+//     toObject: { virtuals: true },
+//   }
+// );
 
-PRSchema.index({ createdAt: -1 });
 
-PRSchema.pre<IPR>("find", async function (next) {
-  (await this.populate("user")).populate("issue");
-  next();
-});
+// const PR: Model<PRInterface> = model<PRInterface>("PR", PRSchema);
 
-const PR: Model<IPR> = model<IPR>("PR", PRSchema);
-
-export default IPR;
+// export default PR;
