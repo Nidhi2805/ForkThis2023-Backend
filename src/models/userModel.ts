@@ -55,6 +55,7 @@ userSchema.virtual("Issues", {
 
 userSchema.virtual("noOfIssuesSolved", {
   get: function (this: UserInterface) {
+    console.log('hi')
     return this.Issues.filter((issue) => issue.issue).length;  
   },
 });

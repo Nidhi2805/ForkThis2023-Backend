@@ -1,0 +1,10 @@
+{
+  message: 'Cannot populate virtual `rank` on model `User`, because options `localField` and / or `foreignField` are missing',
+  level: 'error',
+  timestamp: '2023-09-18 01:43:56'
+}
+{
+  message: 'Cannot populate virtual `rank` on model `User`, because options `localField` and / or `foreignField` are missing',
+  level: 'error',
+  timestamp: '2023-09-18 01:48:16'
+}
