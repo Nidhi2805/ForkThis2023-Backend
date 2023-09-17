@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Express} from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import expressMongoSanitize from 'express-mongo-sanitize';
@@ -13,7 +13,7 @@ import user from './routes/user.js';
 import auth from './routes/auth.js';
 import generate from './routes/generate.js';
 
-const app = express();
+const app: Express = express();
 
 app.use(session({
     secret: envHandler("PASSPORT_SECRET"),

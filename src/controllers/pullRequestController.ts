@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction } from 'express';
 import  catchAsync  from '../managers/catchAsync.js';
 import envHandler from '../managers/envHandler.js';
-import User from '../models/userModel.js';
+import User, { UserInterface } from '../models/userModel.js';
 import axios from 'axios';
 import Issue from '../models/issueModel.js';
 import GitHubIssue from '../types/githubIssue.js';
@@ -18,7 +18,7 @@ export const ClosedPRController = catchAsync(
             logger.protect(`Unauthorized access to ${req.originalUrl} by ${req.ip}`);
             return res.status(401).json({"success":false, "message":"Unauthorized"});
         }
-        const user = await User.findOne({username: username})
+        const user: UserInterface = await User.findOne({username: username})
         if (!user){
             logger.error(`User ${username} not found`);
             return res.status(404).json({"success":false, "message":"User not found"});
