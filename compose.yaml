@@ -14,7 +14,8 @@ services:
     image: mongo:latest 
     container_name: mongo-container-forkthis
     ports:
-      - "27018:27017"  
+      - "27018:27018"
+    command: --port 27018
     volumes:
       - mongo-data:/data/db  
 
