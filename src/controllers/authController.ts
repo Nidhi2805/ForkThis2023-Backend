@@ -12,4 +12,9 @@ export const callbackAuthController = catchAsync(
     async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         const token: string = jwt.sign({id: req.user.id}, envHandler("JWT_KEY"), {expiresIn: 60 * 60 * 24 * 10})
         res.redirect(`${envHandler("FRONTEND_URL")}/redirect?token=${token}`);
+})  
+
+export const failureAuthController = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        res.redirect(`${envHandler("FRONTEND_URL")}/`);
 })

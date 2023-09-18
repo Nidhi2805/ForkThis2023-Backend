@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import githubOptions  from '../helpers/githubOptions.js';
-import { callbackAuthController } from '../controllers/authController.js';
+import { callbackAuthController, failureAuthController } from '../controllers/authController.js';
 
 const auth = express.Router();
 
@@ -21,6 +21,8 @@ passport.deserializeUser(function(obj, done) {
 
 auth.get('/github', passport.authenticate('github', {scope  : ['user:email']}));
 
-auth.get('/github/callback', passport.authenticate('github', { failureRedirect: '/' }), callbackAuthController);
+auth.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/failure' }), callbackAuthController);
+
+auth.get('/failure', failureAuthController);
 
 export default auth;
