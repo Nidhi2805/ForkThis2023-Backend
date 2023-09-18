@@ -36,8 +36,8 @@ jobs:
           ISSUE_TAGS: ${{ steps.process_input.outputs.issue_tags }} 
           PR_URL: ${{ github.event.pull_request.url }}
           ISSUE_URL: ${{github.event.pull_request.issue_url}}
-          AUTHORIZATION_HEADER: "hello"
-          BACKEND_URL: "https://dbae-152-58-205-207.ngrok-free.app/pullrequest/closed"
+          AUTHORIZATION_HEADER: ${{ secrets.AUTH_TOKEN }}
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
         run: |
 
           payload="{\"username\":\"$GITHUB_USERNAME\",\"issue_tags\":\"$ISSUE_TAGS\", \"issue_url\":\"$ISSUE_URL\", \"pr_url\":\"$PR_URL"}"

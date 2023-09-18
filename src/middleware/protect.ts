@@ -10,11 +10,11 @@ export const protect = catchAsync(
         jwt.verify(token, envHandler("JWT_KEY"), function (err: VerifyErrors | null, data: JwtPayload | undefined) {
         if (err) {
             logger.error("Unauthorized access to " + req.originalUrl + " by " + req.ip + "")
-            res.status(401).send({ error: "Not Authorized" })
-        } else {
-            logger.info("Authorized access to " + req.originalUrl + " by " + req.ip + "")
-            req.user = data;
-            next();
+            return res.status(401).send({ error: "Not Authorized" })
         }
+        logger.info("Authorized access to " + req.originalUrl + " by " + req.ip + "")
+        req.user = data;
+        next();
+        
     })
 })

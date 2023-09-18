@@ -10,6 +10,7 @@ export interface UserInterface extends Document {
   Issues: Array<IssueInterface["_id"]>;
   id: string;
   // email: string;
+  // rank:number;
 }
 
 const userSchema = new Schema<UserInterface>(
@@ -36,7 +37,13 @@ const userSchema = new Schema<UserInterface>(
       type: String,
       required: true,
       unique: true,
-    }
+    },
+    Issues: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Issue",
+      }
+    ]
   },
   {
     toJSON: { virtuals: true },
@@ -46,19 +53,24 @@ const userSchema = new Schema<UserInterface>(
 
 userSchema.index({ score: -1 });
 
-userSchema.virtual("Issues", {
-  ref: "Issue",
-  foreignField: "user",
-  localField: "_id",
-});
+// userSchema.virtual("rank", {
+//   get: async function (this: UserInterface) {
+//     const users = await this.$model("User").find({}, { score: 1 }).sort({ score: -1 });
+//     const rank = users.findIndex(user => user._id.toString() === this._id.toString()) + 1;
+//     return rank;
+//   },
+// });
+
+// userSchema.virtual("rank").get(async function (this: UserInterface) {
+//   const user = await UserModel.findById(this._id, { score: 1 });
+//   const rank = await UserModel.countDocuments({ score: { $gt: user.score } }) + 1;
+//   return rank;
+// });
 
 
-userSchema.virtual("noOfIssuesSolved", {
-  get: function (this: UserInterface) {
-    console.log('hi')
-    return this.Issues.filter((issue) => issue.issue).length;  
-  },
-});
+userSchema.virtual("noOfIssuesSolved").get( function(this:UserInterface) {
+    return this.Issues.length;  
+  })
 
 const User: Model<UserInterface> = model<UserInterface>("User", userSchema);
 

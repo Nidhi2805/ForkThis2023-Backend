@@ -3,3 +3,6 @@ dist
 .env
 src/logs
 constants.ts
+logs/error.log
+logs/info.log
+logs/protect.log
