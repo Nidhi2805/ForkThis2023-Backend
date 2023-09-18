@@ -46,7 +46,7 @@ app.use('/user', user);
 app.use('/auth', auth);
 app.use('/generate', generate);
 
-app.listen(3001, () => {
+app.listen(3040, () => {
     console.log(`Server started at port ${envHandler('PORT')}`);
 });
 
