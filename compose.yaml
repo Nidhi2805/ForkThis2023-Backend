@@ -1,25 +1,24 @@
+version: '3'
 services:
-  app:
-    image: forkthis-backend
+  forkthis-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forkthis-backend
     ports:
-      - ${PORT}:${PORT}
+      - "3040:3040"  
     depends_on:
-      - mongodb
-      - redis
-    volumes:
-      - log-data:/app/logs
+      - mongo-db  
 
-  mongodb:
-    image: mongo
+  mongo-db:
+    image: mongo:latest 
+    container_name: mongo-container-forkthis
     ports:
-      - 27017:27017
+      - "27018:27017"  
     volumes:
-      - mongo-data:/data/db
+      - mongo-data:/data/db  
 
 volumes:
   mongo-data:
-    name: lasertag-data
-    driver: local
-  log-data:
-    name: log-data
+    name: mongo-data-forkthis
     driver: local
