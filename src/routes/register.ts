@@ -1,8 +1,8 @@
-import express from 'express';
-import { ClosedPRController } from '../controllers/pullRequestController.js';
+// import express from 'express';
+// import { ClosedPRController } from '../controllers/pullRequestController.js';
 
-const register = express.Router();
+// const register = express.Router();
 
-register.post('/auth', ClosedPRController);
+// register.post('/auth', ClosedPRController);
 
-export default register;
+// export default register;

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@octokit/rest": "^20.0.1",
     "axios": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -25,11 +26,11 @@
     "@types/express-session": "^1.17.7",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lodash": "^4.14.197",
-    "@types/node": "^20.5.1",
+    "@types/node": "^20.6.2",
     "@types/passport": "^1.0.12",
     "@types/passport-github": "^1.1.8",
     "@types/passport-github2": "^1.2.5",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "type": "module",
   "scripts": {

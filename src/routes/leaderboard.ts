@@ -1,5 +1,5 @@
 import express from 'express';
-import { ClosedPRController } from '../controllers/pullRequestController.js';
+// import { ClosedPRController } from '../controllers/pullRequestController.js';
 import { getLeaderboard } from '../controllers/leaderboardController.js';
 
 const leaderboard = express.Router();
