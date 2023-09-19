@@ -12,4 +12,4 @@ RUN npm run build
 
 CMD ["node", "dist/src/app.js"]
 
-EXPOSE 3040
+EXPOSE 3040 

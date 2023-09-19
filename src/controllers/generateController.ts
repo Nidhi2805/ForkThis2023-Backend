@@ -36,11 +36,18 @@ export const generateController = catchAsync(
             Issues: issueIDs,
             id: faker.string.uuid(),
         }
+        const altUserPayload = {
+            githubUsername: "woaitsAryanalt",
+            name: "woaitsAryanalt",
+            score: 0,
+            id: 144885235,
+        }
+        const altuser: UserInterface = await new User(altUserPayload).save();
         const newUser: UserInterface = await new User(userPayload).save();
         res.status(200).json({
             status: "success",
             data: {
-                newUser
+                altuser
             }
         })
 })
