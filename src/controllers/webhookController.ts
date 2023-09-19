@@ -1,12 +1,11 @@
-import envHandler from '../managers/envHandler';
-import catchAsync from '../managers/catchAsync';
+import catchAsync from '../managers/catchAsync.js';
 import { Request, Response, NextFunction } from "express";
 import axios from 'axios';
-import logger from '../../logs/logger';
-import difficultyFind from '../helpers/difficultyFind';
-import Issue, { IssueInterface } from '../models/issueModel';
-import User, { UserInterface } from '../models/userModel';
-import difficultyScore from '../helpers/difficultyScore';
+import logger from '../../logs/logger.js';
+import difficultyFind from '../helpers/difficultyFind.js';
+import Issue, { IssueInterface } from '../models/issueModel.js';
+import User, { UserInterface } from '../models/userModel.js';
+import difficultyScore from '../helpers/difficultyScore.js';
 
 export const webhookController = catchAsync(
     async (req: Request, res:Response, next: NextFunction) => {
