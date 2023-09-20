@@ -13,6 +13,7 @@ import user from './routes/user.js';
 import auth from './routes/auth.js';
 import generate from './routes/generate.js';
 import webhook from './routes/webhook.js';
+import admin from './routes/admin.js';
 
 const app: Express = express();
 
@@ -47,7 +48,7 @@ app.use('/user', user);
 app.use('/auth', auth);
 app.use('/generate', generate);
 app.use('/webhook', webhook);
-
+app.use('/admin', admin);
 
 app.listen(3040, () => {
     console.log(`Server started at port ${envHandler('PORT')}`);
