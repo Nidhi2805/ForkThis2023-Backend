@@ -9,7 +9,7 @@ export interface UserInterface extends Document {
   noOfIssuesSolved: number;
   Issues: Array<IssueInterface["_id"]>;
   id: string;
-  // email: string;
+  email: string;
   // rank:number;
 }
 
@@ -43,7 +43,12 @@ const userSchema = new Schema<UserInterface>(
         type: Schema.Types.ObjectId,
         ref: "Issue",
       }
-    ]
+    ],
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    }
   },
   {
     toJSON: { virtuals: true },

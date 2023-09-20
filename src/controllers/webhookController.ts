@@ -6,12 +6,15 @@ import difficultyFind from '../helpers/difficultyFind.js';
 import Issue, { IssueInterface } from '../models/issueModel.js';
 import User, { UserInterface } from '../models/userModel.js';
 import difficultyScore from '../helpers/difficultyScore.js';
+import { verify_signature } from '../helpers/verify.js';
 
 export const webhookController = catchAsync(
     async (req: Request, res:Response, next: NextFunction) => {
-
+    if(!verify_signature(req)){
+      logger.protect(`Invalid signature from ${req.ip}`)
+      return res.status(401).json({"success":false, "message":"Invalid signature"});
+    }
     const eventType = req.headers['x-github-event'];
-    
     if (eventType === 'pull_request' && req.body.action === 'closed' && req.body.pull_request.merged) {
       const username = req.body.pull_request.user.login;
       const user: UserInterface = await User.findOne({githubUsername: username})
@@ -43,7 +46,6 @@ export const webhookController = catchAsync(
     newscore = newscore + difficultyScore(issuePayload.difficulty);
 
     user.score = newscore;
-    console.log(user);
     logger.info(`User ${username} has scored ${user.score} points`);
     await user.save();
     return res.status(200).json({"success":true});
