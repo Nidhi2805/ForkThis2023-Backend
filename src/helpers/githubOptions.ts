@@ -7,13 +7,12 @@ import logger from "../../logs/logger.js";
 const githubOptions = new Strategy({
         clientID: envHandler("GITHUB_CLIENT_ID"),
         clientSecret: envHandler("GITHUB_CLIENT_SECRET"),
-        callbackURL: `${envHandler("URL")}/auth/github/callback`
+        callbackURL: `${envHandler("URL")}/auth/github/callback`,
+        scope: ['user:email']
       }, async function(accessToken:any, refreshToken:any, profile:any, cb:any) { 
         try{
           const user = await User.findOne({ githubUsername: profile.username });
           if (user === null) {
-            console.log('making new user')
-            console.log(profile)
             if(!profile.displayName){
                 profile.displayName = profile.username
             }
@@ -21,7 +20,7 @@ const githubOptions = new Strategy({
               githubUsername: profile.username,
               name: profile.displayName,
               id: profile.id,
-            //   email: profile.emails[0].value,
+              email: profile.emails[0].value,
             });
             await newUser.save();
             logger.info(profile.username + " has made an account");
