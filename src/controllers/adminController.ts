@@ -21,3 +21,25 @@ export const adminGetUserController = catchAsync(
         }
         return res.status(200).json({userdata: existingUser})
     })
+
+export const adminUpdateScoreController = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const {auth, username, score}:{auth:string, username:string, score:number} = req.body;
+        if (auth !== envHandler("GENERATOR_SECRET")){
+            return res.status(401).json({
+                status: "fail",
+                message: "Unauthorized"
+            })
+        }
+        const existingUser = await User.findOne({githubUsername: username});
+        if(!existingUser){
+            return res.status(404).json({
+                status: "fail",
+                message: "User not found"
+            })
+        }
+        existingUser.score = score;
+        await existingUser.save();
+        return res.status(200).json({userdata: existingUser})
+
+    })
