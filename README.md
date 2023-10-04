@@ -8,10 +8,10 @@
     <img src="https://csivit.com/images/favicon.png" alt="Logo" width="80">
   </a>
 
-  <h3 align="center">YOUR_TITLE</h3>
+  <h3 align="center">ForkThis 2023 Backend</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    ForkThis is a Git/Github workshop and the above code is the backend for the competition website
     <br />
     <a href="https://github.com/csivitu/Template"><strong>Explore the docs »</strong></a>
     <br />
@@ -34,10 +34,6 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
 * [Contributors](#contributors-)
 
 
@@ -45,18 +41,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`Template`
+Backend used for ForkThis's competition. Features like GitHub Auth, a leaderboard system where the points are automatically added when a pull request is merged through webhooks
 
 
 ### Built With
 
-* []()
-* []()
-* []()
+* Express
+* Typescript
+* MongoDB
+* webhooks
 
 
 
@@ -83,37 +76,11 @@ git clone https://github.com/csivitu/Template.git
 ```sh
 npm install
 ```
+3. Start the app in dev mode
+```sh
+npm run start
+```
 
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/csivitu/Template/issues) for a list of proposed features (and known issues).
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: Add some AmazingFeature'`)
-4. Push to the Branch (`git push -u origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-You are requested to follow the contribution guidelines specified in [CONTRIBUTING.md](./CONTRIBUTING.md) while contributing to the project :smile:.
 
 <!-- LICENSE -->
 ## License
