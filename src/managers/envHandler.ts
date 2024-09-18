@@ -1,15 +1,8 @@
-// import dotenv from 'dotenv';
-// import path from 'path';
-// import { fileURLToPath } from 'url';
-import { constants } from './constants.js';
-// const currentModuleURL = import.meta.url;
-// const currentModulePath = fileURLToPath(currentModuleURL);
-// const envPath = path.join(path.dirname(currentModulePath), '../../', '.env');
+import 'dotenv/config';
 
-// dotenv.config({path: envPath});
-
+// Generic environment handler
 const envHandler = (envName: string): string => {
-    const env = constants[envName];
+    const env = process.env[envName];
     if (!env) throw new Error(`ENV ${envName} is not defined.`);
     return env;
 };

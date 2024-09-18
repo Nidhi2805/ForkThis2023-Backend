@@ -1,57 +1,34 @@
-import express, {Express} from 'express';
-import cors from 'cors';
+import express from 'express';
 import session from 'express-session';
-import expressMongoSanitize from 'express-mongo-sanitize';
-import envHandler from "./managers/envHandler.js";
-import morgan from 'morgan';
-import helmet from 'helmet';
-// import pullrequest from './routes/pullrequest.js';
-// import register from './routes/register.js';
-import leaderboard from './routes/leaderboard.js';
-import connectToDB from './managers/db.js';
-import user from './routes/user.js';
-import auth from './routes/auth.js';
-import generate from './routes/generate.js';
-import webhook from './routes/webhook.js';
-import admin from './routes/admin.js';
+import mongoose from 'mongoose';
+import authRoutes from './controllers/authController'; // Adjust the path as necessary
+import envHandler from './managers/envHandler.js'; // Adjust the path as necessary
 
-const app: Express = express();
+const app = express();
+const PORT = envHandler('PORT') || 3020;
+const mongoUri = envHandler('MONGO_URI');
 
+// Connect to MongoDB
+mongoose.connect(mongoUri)
+  .then(() => console.log('MongoDB connected'))
+  .catch((error) => console.log('Error connecting to MongoDB:', error));
+
+// Set up session middleware
 app.use(session({
-    secret: envHandler("PASSPORT_SECRET"),
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-}))
+  secret: envHandler('SESSION_SECRET'),
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }, // Set to true for HTTPS
+}));
 
-app.use(cors());
 app.use(express.json());
-app.use(helmet());
+app.use(express.urlencoded({ extended: false }));
 
-if (envHandler('NODE_ENV') === 'dev') app.use(morgan('dev'));
+// Routes
+app.use('/auth', authRoutes);
 
-connectToDB();
-
-app.use((_, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', '*');
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    next();
-})
-
-app.use(expressMongoSanitize());
-
-// app.use('/pullrequest', pullrequest);
-// app.use('/github', register)
-app.use('/leaderboard', leaderboard)
-app.use('/user', user);
-app.use('/auth', auth);
-app.use('/generate', generate);
-app.use('/webhook', webhook);
-app.use('/admin', admin);
-
-app.listen(3040, () => {
-    console.log(`Server started at port ${envHandler('PORT')}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
-export default app;

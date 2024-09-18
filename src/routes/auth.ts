@@ -1,27 +1,30 @@
 import express from 'express';
-import passport from 'passport';
-import githubOptions  from '../helpers/githubOptions.js';
-import { callbackAuthController, failureAuthController } from '../controllers/authController.js';
+import AuthService from '../helpers/authServices';
+import { callbackAuthController, failureAuthController } from '../controllers/authController';
 
 const auth = express.Router();
 
-passport.use(githubOptions);
-
-auth.use(passport.initialize());
-auth.use(passport.session());
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
+auth.get('/github', (req, res) => {
+  const redirectUrl = AuthService.getGitHubOAuthRedirectUrl();
+  res.redirect(redirectUrl);
 });
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+auth.get('/github/callback', async (req, res, next) => {
+  try {
+    const { code } = req.query;
+    if (!code) {
+      return res.redirect('/auth/failure'); 
+    }
+
+    const { token, user } = await AuthService.handleGitHubCallback(code as string);
+
+    req.session.token = token;
+
+    return res.json({ message: 'Login successful', user, token });
+  } catch (error) {
+    next(error);
+  }
 });
-
-
-auth.get('/github', passport.authenticate('github', {scope  : ['user:email']}));
-
-auth.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/failure' }), callbackAuthController);
 
 auth.get('/failure', failureAuthController);
 

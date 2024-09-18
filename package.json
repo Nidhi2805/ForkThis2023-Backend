@@ -1,14 +1,13 @@
 {
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
-    "@octokit/rest": "^20.0.1",
     "axios": "^1.4.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-mongo-sanitize": "^2.2.0",
-    "express-session": "^1.17.3",
+    "express-session": "^1.18.0",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
@@ -19,7 +18,8 @@
     "passport-github": "^1.1.0",
     "passport-github2": "^0.1.12",
     "ts-node": "^10.9.1",
-    "winston": "^3.10.0"
+    "winston": "^3.10.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
@@ -35,9 +35,9 @@
   },
   "type": "module",
   "scripts": {
-    "start": "nodemon --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' ./src/app.ts",
+    "start": "bun --watch src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.ts",
-    "build": "tsc"
+    "dev": "bun src/app.ts",
+    "build": "bun build ./src/app.ts --outdir ./build --target bun"
   }
 }
